@@ -60,3 +60,5 @@ Graph.prototype = {
   }
 };
 
+module.exports = graph;
+
