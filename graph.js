@@ -48,17 +48,17 @@ Graph.prototype = {
   },
 
   addEdge: function(from, to, weight) {
-    if (!this.conatins(from))
+    if (!this.contains(from))
       this.addVertex(from);
-    if (!this.conatins(to))
+    if (!this.contains(to))
       this.addVertex(to);
     this.vertList[from].addNeighbor(to, weight);
   },
 
   getVertices: function() {
-    return Obejct.keys(this.vertList);
+    return Object.keys(this.vertList);
   }
 };
 
-module.exports = graph;
+module.exports = Graph;
 
