@@ -29,5 +29,3 @@ for (var bucket in buckets) {
     }
   }
 }
-
-console.log(graph.getVertices());
