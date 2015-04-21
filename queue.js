@@ -13,3 +13,5 @@ Queue.prototype = {
     return this.elements.shift();
   }
 };
+
+module.exports = Queue;
