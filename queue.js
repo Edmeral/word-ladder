@@ -11,6 +11,10 @@ Queue.prototype = {
     if (this.elements.length === 0)
       return null;
     return this.elements.shift();
+  },
+
+  size: function() {
+    return this.elements.length;
   }
 };
 

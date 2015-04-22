@@ -1,5 +1,8 @@
 function Vertex(key) {
   this.id = key;
+  this.distance = 0;
+  this.predecessor = null;
+  this.color = 'white';
   this.connectedTo = {};
 }
 
