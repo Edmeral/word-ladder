@@ -1,15 +1,14 @@
 function Vertex(key) {
   this.id = key;
-  this.distance = 0;
   this.predecessor = null;
   this.color = 'white';
   this.connectedTo = {};
 }
 
 Vertex.prototype = {
-  addNeighbor: function(nbr, weight) {
+  addNeighbor: function(neighbor, weight) {
     weight = weight || 0;
-    this.connectedTo[nbr] = weight;
+    this.connectedTo[neighbor] = weight;
   },
 
   toString: function() {
@@ -55,7 +54,16 @@ Graph.prototype = {
       this.addVertex(from);
     if (!this.contains(to))
       this.addVertex(to);
-    this.vertList[from].addNeighbor(to, weight);
+    try {
+      this.vertList[from].addNeighbor(to, weight);
+    }
+    catch(e) {
+      // aparently I can't make a connection between the words "constructor" and "constrictor", 
+      // does this last one exist by the way?, 
+      // I don't know why trying to make a connection between the two leads to and error.
+      console.log(e);
+      console.log(from, to);
+    }
   },
 
   getVertices: function() {
