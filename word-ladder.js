@@ -2,14 +2,9 @@ var Graph = require('./graph');
 var Queue = require('./queue');
 var fs = require('fs');
 
-var words = fs.readFileSync('words-big.txt').toString().split('\r\n');
+var words = fs.readFileSync('words.txt').toString().split('\n');
+
 var buckets = {};
-// console.log(words);
-// console.log(words[1].length);
-// console.log(words[1]);
-// console.log(words[words.length - 1].length);
-// console.log(words[words.length - 1]);
-// console.log('ze');
 
 words.forEach(function(word) {
   for (var i = 0; i < word.length; i++) {
@@ -24,11 +19,10 @@ words.forEach(function(word) {
 /**
 /* Creating the words graph
 **/
-
 var graph = new Graph();
 
-// using this way, we won't crate a vertex if the word doesn't have any connections, 
-// that is all it's corresponding buckets are empty.
+// using this way, we won't create a vertex if the word doesn't have any connections, 
+// (if all it's corresponding buckets are empty)
 for (var bucket in buckets) {
   for (var i in buckets[bucket]) {
     for (var j in buckets[bucket]) {
@@ -44,7 +38,9 @@ function bfs(start) {
 
   while (vertQueue.size() > 0) {
     currentVert = vertQueue.dequeue();
-    var neighbors = currentVert.getConnections();
+    if (currentVert == to)
+      break;
+    var neighbors = currentVert.connectedTo;
 
     for (var i in neighbors) {
       var vertex = graph.getVertex(neighbors[i]);
@@ -58,26 +54,19 @@ function bfs(start) {
   }
 }
 
-
-// console.log(graph.getVertex('magic'));
-// console.log(graph.getVertex('hobby'));
-// console.log(graph.getVertex('wines'));
-
-
 var to = process.argv[2];
 var from = process.argv[3];
 
-function traverse(y) {
-  var x = y;
-  if (x.predecessor === null) {
+function printLadder(start) {
+  if (start.predecessor === null) {
     console.log("Thousand of words, yet I can't find a connection between these two!");
     return;
   }
-  while(x.predecessor) {
-    process.stdout.write(x.getId() + ' ==> ');
-    x = x.predecessor;
+  while(start.predecessor) {
+    process.stdout.write(start.id + ' ==> ');
+    start = start.predecessor;
   }
-  process.stdout.write(x.getId() + '\n');
+  process.stdout.write(start.id + '\n');
 }
 
 if (from.length == to.length && from.length !== 0) {
@@ -86,7 +75,7 @@ if (from.length == to.length && from.length !== 0) {
 
   if (fromVertex && toVertex) {
     bfs(graph.getVertex(from));
-    traverse(graph.getVertex(to));
+    printLadder(graph.getVertex(to));
   }
   else 
     console.log("Thousand of words, yet I can't find a connection between these two!");
@@ -94,4 +83,3 @@ if (from.length == to.length && from.length !== 0) {
 else {
   console.log('You must enter 2 words of the same length!');
 }
-

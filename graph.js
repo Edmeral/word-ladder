@@ -2,30 +2,11 @@ function Vertex(key) {
   this.id = key;
   this.predecessor = null;
   this.color = 'white';
-  this.connectedTo = {};
+  this.connectedTo = [];
 }
 
-Vertex.prototype = {
-  addNeighbor: function(neighbor, weight) {
-    weight = weight || 0;
-    this.connectedTo[neighbor] = weight;
-  },
-
-  toString: function() {
-    return this.id + ' connectedTo: ' + this.connectedTo;
-  },
-
-  getConnections: function() {
-    return Object.keys(this.connectedTo);
-  },
-
-  getId: function() {
-    return this.id;
-  },
-
-  getWeight: function(neighbor) {
-    return this.connectedTo[neighbor];
-  }
+Vertex.prototype.addNeighbor = function(neighbor) {
+  this.connectedTo.push(neighbor);
 };
 
 function Graph() {
@@ -45,30 +26,15 @@ Graph.prototype = {
     return this.vertList[key];
   },
 
-  contains: function(key) {
-    return key in this.vertList;
-  },
-
-  addEdge: function(from, to, weight) {
-    if (!this.contains(from))
+  addEdge: function(from, to) {
+    if (!(from in this.vertList)) 
       this.addVertex(from);
-    if (!this.contains(to))
-      this.addVertex(to);
-    try {
-      this.vertList[from].addNeighbor(to, weight);
-    }
-    catch(e) {
-      // aparently I can't make a connection between the words "constructor" and "constrictor", 
-      // does this last one exist by the way?, 
-      // I don't know why trying to make a connection between the two leads to and error.
-      console.log(e);
-      console.log(from, to);
-    }
-  },
 
-  getVertices: function() {
-    return Object.keys(this.vertList);
-  }
+    if (!(to in this.vertList))
+      this.addVertex(to);
+
+    this.vertList[from].addNeighbor(to);
+  } 
 };
 
 module.exports = Graph;
